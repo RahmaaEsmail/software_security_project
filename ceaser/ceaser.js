@@ -3,9 +3,10 @@ const decryptBtn = document.getElementById("decrypt-btn");
 const KeyOfAlgorith = document.querySelector("input");
 const message = document.querySelector("textarea");
 
+
 function handleEncrypt() {
   const plainTxt = message.value;
-  const key = Number(KeyOfAlgorith.value);
+  const keyValue = Number(KeyOfAlgorith.value);
   let encryptedMessage = "";
 
   for (let i = 0; i < plainTxt.length; i++) {
@@ -14,7 +15,7 @@ function handleEncrypt() {
       const charAsciiCode = plainTxt.charCodeAt(i);
       const offset = char === char.toUpperCase() ? 65 : 97;
       const charPosition = charAsciiCode - offset;
-      char = String.fromCharCode(((charPosition + key) % 26) + offset);
+      char = String.fromCharCode(((charPosition + keyValue) % 26) + offset);
     }
 
     encryptedMessage += char;
@@ -22,17 +23,19 @@ function handleEncrypt() {
   message.value = encryptedMessage;
 }
 
-function handleDecrypt(encryptedMessage) {
+function handleDecrypt() {
+  const cipherTxt = message.value;
+  const keyValue = Number(KeyOfAlgorith.value);
   let decryptedMessage = "";
-  const key = Number(KeyOfAlgorith.value);
 
-  for (let i = 0; i < encryptedMessage.length; i++) {
-    let char = encryptedMessage[i];
+  for (let i = 0; i < cipherTxt.length; i++) {
+    let char = cipherTxt[i];
     if (char.match(/[a-zA-Z]/)) {
-      const charAsciiCode = encryptedMessage.charCodeAt(i);
+      const charAsciiCode = cipherTxt.charCodeAt(i);
       const offset = char === char.toUpperCase() ? 65 : 97;
       const charPosition = charAsciiCode - offset;
-      char = String.fromCharCode(((charPosition - key) % 26) + offset);
+      const cipher =  (charPosition - keyValue) < 0 ? ((charPosition - keyValue) + 26) : (charPosition - keyValue)
+      char = String.fromCharCode((cipher % 26) + offset);
     }
 
     decryptedMessage += char;
@@ -41,4 +44,4 @@ function handleDecrypt(encryptedMessage) {
 }
 
 encryptBtn.addEventListener("click", handleEncrypt);
-decryptBtn.addEventListener("click", handleDecrypt);
+decryptBtn.addEventListener("click",handleDecrypt);
