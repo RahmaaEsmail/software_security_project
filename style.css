@@ -94,3 +94,13 @@ button {
     border: 1px solid #a7bbbb;
     color:#225555;
 }
+
+@media (max-width:560px) {
+    body {
+        padding: 20px;
+    }
+
+    .container {
+        width: 100%;
+    }
+}
