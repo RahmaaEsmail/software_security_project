@@ -22,7 +22,7 @@ function handleEncrpt() {
   let plainText = message.value;
   let encryptedMessage = "";
 
-  if (gcdResult === 1) {
+//   if (gcdResult === 1) {
     for (let i = 0; i < plainText.length; i++) {
       let char = plainText[i];
       if (char.match(/[a-zA-Z]/)) {
@@ -47,7 +47,7 @@ function handleEncrpt() {
       encryptedMessage += char;
     }
     message.value = encryptedMessage;
-  }
+//   }
   return encryptedMessage;
 }
 
