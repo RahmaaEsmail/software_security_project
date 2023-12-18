@@ -16,12 +16,13 @@ function ModularInverse(a, n) {
 
 const gcd = (a, n) => (n == 0 ? a : gcd(n, a % n));
 
+const gcdResult = gcd(Number(fisrtKey.value) , SIZE_OF_ALPHABET)
 
 function handleEncrpt() {
   let plainText = message.value;
   let encryptedMessage = "";
 
-  if (result === 1) {
+  if (gcdResult === 1) {
     for (let i = 0; i < plainText.length; i++) {
       let char = plainText[i];
       if (char.match(/[a-zA-Z]/)) {
