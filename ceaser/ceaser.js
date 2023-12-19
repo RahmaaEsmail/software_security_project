@@ -1,47 +1,55 @@
 const encryptBtn = document.getElementById("encrypt-btn");
 const decryptBtn = document.getElementById("decrypt-btn");
-const KeyOfAlgorith = document.querySelector("input");
-const message = document.querySelector("textarea");
+let text;
 
-
-function handleEncrypt() {
-  const plainTxt = message.value;
-  const keyValue = Number(KeyOfAlgorith.value);
-  let encryptedMessage = "";
-
+function handleEncrypt(plainTxt, keyValue) {
+  plainTxt = plainTxt.toLowerCase();
+  let result = "";
   for (let i = 0; i < plainTxt.length; i++) {
     let char = plainTxt[i];
-    if (char.match(/[a-zA-Z]/)) {
-      const charAsciiCode = plainTxt.charCodeAt(i);
-      const offset = char === char.toUpperCase() ? 65 : 97;
-      const charPosition = charAsciiCode - offset;
-      char = String.fromCharCode(((charPosition + keyValue) % 26) + offset);
+    let code = plainTxt.charCodeAt(i);
+    if (char.match(/[a-z]/)) {
+      const encryptedCode = ((code - 97 + keyValue) % 26) + 97;
+      const encryptedChar = String.fromCharCode(encryptedCode);
+      result += encryptedChar;
+    } else {
+      result += char;
     }
-
-    encryptedMessage += char;
   }
-  message.value = encryptedMessage;
+  text = result;
+  return result;
 }
 
-function handleDecrypt() {
-  const cipherTxt = message.value;
-  const keyValue = Number(KeyOfAlgorith.value);
-  let decryptedMessage = "";
-
+function handleDecrypt(cipherTxt, keyValue) {
+  cipherTxt = cipherTxt.toLowerCase();
+  let result = "";
   for (let i = 0; i < cipherTxt.length; i++) {
     let char = cipherTxt[i];
-    if (char.match(/[a-zA-Z]/)) {
-      const charAsciiCode = cipherTxt.charCodeAt(i);
-      const offset = char === char.toUpperCase() ? 65 : 97;
-      const charPosition = charAsciiCode - offset;
-      const cipher =  (charPosition - keyValue) < 0 ? ((charPosition - keyValue) + 26) : (charPosition - keyValue)
-      char = String.fromCharCode((cipher % 26) + offset);
+    const charAsciiCode = cipherTxt.charCodeAt(i);
+    if (char.match(/[a-z]/)) {
+      let cipher = charAsciiCode - 97 - keyValue;
+      while (cipher < 0) {
+        cipher += 26;
+      }
+      const encryptedCode = (cipher % 26) + 97;
+      const encryptedChar = String.fromCharCode(encryptedCode);
+      result += encryptedChar;
+    } else {
+      result += char;
     }
-
-    decryptedMessage += char;
   }
-  message.value = decryptedMessage;
+  return result;
 }
 
-encryptBtn.addEventListener("click", handleEncrypt);
-decryptBtn.addEventListener("click",handleDecrypt);
+encryptBtn.addEventListener("click", () => {
+  const key = document.getElementById("key");
+  const message = document.querySelector("textarea");
+  const encryptedText = handleEncrypt(message.value, Number(key.value));
+  console.log("Encrypted Message : ", encryptedText);
+});
+
+decryptBtn.addEventListener("click", () => {
+  const key = document.getElementById("key");
+  const decryptedMessage = handleDecrypt(text, Number(key.value));
+  console.log("Decrypted Message : ", decryptedMessage);
+});
